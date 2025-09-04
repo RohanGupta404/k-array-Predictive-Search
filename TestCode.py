@@ -11,32 +11,41 @@ import random
 
 def thingy(start, end, arr, T, k, divisor):
 
-    if end - start < k:
+    if start == end:
+        print(f"Found at arr[{start}] = {arr[start]}")
+        return True
+
+    if end - start <= k:
         k = k // divisor
 
     low = arr[start]
-    high = arr[end-1]
+    high = arr[end]
 
     pos = ((T - low)*(k))/(high - low)
 
 
     subStart = int((end-start) * (pos//1)/k) + start
     subEnd = int((end-start) * (pos//1 + 1)/k) + start
-
+    print(f"{subStart}: {arr[subStart]}, {subEnd}: {arr[subEnd]}")
     if T < arr[subStart]:
         subStart = start
     elif T > arr[subEnd]:
         subEnd = end
 
-    if k >= 3:
+    if k >= 3 and subEnd - subStart > 1:
+        print(f"Recurssion step: subEnd: {subEnd} = {arr[subEnd]}, subStart: {subStart} = {arr[subStart]}")
         thingy(subStart, subEnd, arr, T, k, divisor)
     else:
+
         print(f"start[{subStart}] = {arr[subStart]}, end[{subEnd}] = {arr[subEnd]}")
+        return True
 
 
 
 arr = []
-for i in range(-10000,10000):
+for i in range(-678900, 1000000):
     arr.append(random.randint(i*10, (i+1)*10))
 
-thingy(0, len(arr), arr, 687, 10, 2)
+output = thingy(0, len(arr)-1, arr, 687, 10, 2)
+
+print(output)
