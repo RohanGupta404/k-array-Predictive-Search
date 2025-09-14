@@ -1,4 +1,5 @@
 import numpy as np
+from TestCode import kaps
 
 # -----------------------------
 # Distributions
@@ -51,16 +52,33 @@ def generate_array(N, dist="uniform", seed=None):
     rng = np.random.default_rng(seed) if seed is not None else np.random.default_rng()
     if dist not in DIST_FUNCS:
         raise ValueError(f"Unknown distribution '{dist}'. Options: {list(DIST_FUNCS)}")
-    values = DIST_FUNCS[dist](N, rng=rng)
-    values.sort(kind="mergesort")  # keep sorted
-    # build arr = [[index, value], ...]
-    arr = [[i, int(v)] for i, v in enumerate(values)]
+
+    # generate more than needed, then remove duplicates
+    raw_values = DIST_FUNCS[dist](N * 2, rng=rng)  # oversample
+    unique_values = np.unique(raw_values)
+
+    # if we still don’t have enough uniques, fall back to random.choice without replacement
+    if len(unique_values) < N:
+        # just pick N unique values in the allowed range
+        low, high = 0, 10**9
+        unique_values = rng.choice(np.arange(low, high, dtype=np.int64), size=N, replace=False)
+    else:
+        unique_values = unique_values[:N]
+
+    unique_values.sort(kind="mergesort")
+    arr = unique_values.astype(int).tolist()
     return arr
+
+
 
 # -----------------------------
 # Example usage
 # -----------------------------
 if __name__ == "__main__":
-    arr = generate_array(10**5, dist="zipf", seed=42)
-    print(f"✅ Generated arr with {len(arr):,} rows (first 5):")
-    print(arr[:5])
+    arr = generate_array(10**5, dist="zipf", seed=159)
+
+
+    output = kaps(0, len(arr)-1, arr, 35489514, 10, 2)
+
+
+#output = thingy(0, len(arr)-1, arr, 687, 10, 2)
