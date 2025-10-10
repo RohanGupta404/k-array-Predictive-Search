@@ -1,5 +1,6 @@
 import numpy as np
-from TestCode import kaps
+from TestCode_03 import kaps
+import time
 
 # -----------------------------
 # Distributions
@@ -75,10 +76,17 @@ def generate_array(N, dist="uniform", seed=None):
 # Example usage
 # -----------------------------
 if __name__ == "__main__":
-    arr = generate_array(10**5, dist="zipf", seed=159)
+    arr = generate_array(10**6, dist="uniform", seed=15)
 
+    t_start = time.perf_counter_ns()
+    output = kaps(0, len(arr)-1, arr, 8704587009, 100, 2)
+    t_end = time.perf_counter_ns()
 
-    output = kaps(0, len(arr)-1, arr, 35489514, 10, 2)
+    elapsed_ns = t_end - t_start
+    elapsed_s = elapsed_ns / 1e9
+    elapsed_us = elapsed_ns / 1e3
 
+    print(f"Elapsed: {elapsed_s:.9f} s ({elapsed_us:.2f} µs)")
+    print("Output:", output)
 
 #output = thingy(0, len(arr)-1, arr, 687, 10, 2)
