@@ -1,5 +1,5 @@
 import numpy as np
-from TestCode_03 import kaps
+import KAPS_DifferentDistributions
 import time
 
 # -----------------------------
@@ -76,10 +76,10 @@ def generate_array(N, dist="uniform", seed=None):
 # Example usage
 # -----------------------------
 if __name__ == "__main__":
-    arr = generate_array(10**6, dist="uniform", seed=15)
+    arr = generate_array(10**6, dist="exponential", seed=15)
 
     t_start = time.perf_counter_ns()
-    output = kaps(0, len(arr)-1, arr, 8704587009, 100, 2)
+    output = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
     t_end = time.perf_counter_ns()
 
     elapsed_ns = t_end - t_start
