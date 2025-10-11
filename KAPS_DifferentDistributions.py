@@ -2,21 +2,24 @@
 ## still experimental and may need further adjustments.
 
 # Tracks recursion depth for debugging / tracing
-depth = 1
+depth = 0
 
 def kaps(lo, hi, arr, target, k, divisor, G_choice):
 
     global depth
-    print(depth)
     depth += 1
 
     # Fast rejects: target outside current window's value range
     if target < arr[lo] or target > arr[hi]:
-        return -1
+        d = depth
+        depth = 0
+        return -1, d
 
     # Base case: interval collapsed to one element.
     if lo == hi:
-        return lo if arr[lo] == target else -1
+        d = depth
+        depth = 0
+        return lo, depth if arr[lo] == target else -1, d
 
     # Avoid over-partitioning; keep k >= 1  (FIX #2)
     if hi - lo <= k:
@@ -44,9 +47,13 @@ def kaps(lo, hi, arr, target, k, divisor, G_choice):
     else:
         # Direct hit checks for bucket edges.
         if arr[subLo] == target:
-            return subLo
+            d = depth
+            depth = 0
+            return subLo, d
         elif arr[subHi] == target:
-            return subHi
+            d = depth
+            depth = 0
+            return subHi, d
         # otherwise keep current [subLo, subHi]
 
     # Recurse if interval still >1 and k allows further partitioning.
@@ -56,8 +63,15 @@ def kaps(lo, hi, arr, target, k, divisor, G_choice):
         # Terminal step: at most two candidates left (loop over <=2 elements)
         for i in range(subLo, subHi + 1):
             if arr[i] == target:
-                return i
-        return -1
+                d = depth
+                depth = 0
+                return i, d
+        d = depth
+        depth = 0
+        return -1, d
+
+
+
 
 
 

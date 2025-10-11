@@ -79,7 +79,13 @@ if __name__ == "__main__":
     arr = generate_array(10**6, dist="exponential", seed=15)
 
     t_start = time.perf_counter_ns()
-    output = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
+    output1 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 100, 2, KAPS_DifferentDistributions.G_uniform())
+    output2 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_uniform())
+    output3 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.001))
+    output4 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
+    output5 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 25, 5, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
+    output6 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 25, 5, KAPS_DifferentDistributions.G_exponential(lmbda=0.000001))
+    output7 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.000001))
     t_end = time.perf_counter_ns()
 
     elapsed_ns = t_end - t_start
@@ -87,6 +93,12 @@ if __name__ == "__main__":
     elapsed_us = elapsed_ns / 1e3
 
     print(f"Elapsed: {elapsed_s:.9f} s ({elapsed_us:.2f} µs)")
-    print("Output:", output)
+    print(f"Output: {output1[0]}, depth: {output1[1]}")
+    print(f"Output: {output2[0]}, depth: {output2[1]}")
+    print(f"Output: {output3[0]}, depth: {output3[1]}")
+    print(f"Output: {output4[0]}, depth: {output4[1]}")
+    print(f"Output: {output5[0]}, depth: {output5[1]}")
+    print(f"Output: {output6[0]}, depth: {output6[1]}")
+    print(f"Output: {output7[0]}, depth: {output7[1]}")
 
 #output = thingy(0, len(arr)-1, arr, 687, 10, 2)
