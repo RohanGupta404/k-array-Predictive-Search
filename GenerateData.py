@@ -13,8 +13,9 @@ def gen_zipf(N, a=2.0, cap=10**12, rng=None):
     x = np.minimum(x, cap)
     return x.astype(np.int64)
 
-def gen_exponential(N, scale=1e6, rng=None):
+def gen_exponential(N, scale=1e4, rng=None):
     x = (rng or np.random).exponential(scale, N)
+    x = x**2
     return x.astype(np.int64)
 
 def gen_clustered(N, clusters=5, spread=10000, max_base=10**9, rng=None):
@@ -76,29 +77,54 @@ def generate_array(N, dist="uniform", seed=None):
 # Example usage
 # -----------------------------
 if __name__ == "__main__":
-    arr = generate_array(10**6, dist="exponential", seed=15)
+    arr = generate_array(1000000, dist="exponential", seed=176886)
 
-    t_start = time.perf_counter_ns()
-    output1 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 100, 2, KAPS_DifferentDistributions.G_uniform())
-    output2 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_uniform())
-    output3 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.001))
-    output4 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
-    output5 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 25, 5, KAPS_DifferentDistributions.G_exponential(lmbda=0.0000001))
-    output6 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 25, 5, KAPS_DifferentDistributions.G_exponential(lmbda=0.000001))
-    output7 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, 870479, 10, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.000001))
-    t_end = time.perf_counter_ns()
 
-    elapsed_ns = t_end - t_start
-    elapsed_s = elapsed_ns / 1e9
-    elapsed_us = elapsed_ns / 1e3
 
-    print(f"Elapsed: {elapsed_s:.9f} s ({elapsed_us:.2f} µs)")
-    print(f"Output: {output1[0]}, depth: {output1[1]}")
-    print(f"Output: {output2[0]}, depth: {output2[1]}")
-    print(f"Output: {output3[0]}, depth: {output3[1]}")
-    print(f"Output: {output4[0]}, depth: {output4[1]}")
-    print(f"Output: {output5[0]}, depth: {output5[1]}")
-    print(f"Output: {output6[0]}, depth: {output6[1]}")
-    print(f"Output: {output7[0]}, depth: {output7[1]}")
+    import matplotlib.pyplot as plt
+
+    plt.plot(arr)
+    #plt.show()
+
+    depths = [0,0,0,0,0]
+
+    positionsInArray = [0.1,0.3,0.5,0.7,0.9,1.3,1.8,2.5,3.5,5,7,10,15,20,25,30,40,50,60,70,75,80,85,90,92,95,97,98,99,99.5,99.8,99.9]
+
+    for j in positionsInArray:
+
+        target = arr[int(j*len(arr)/100)]
+
+        depth1, depth2, depth3, depth4, depth5 = 0,0,0,0,0
+
+        for i in [2,4,8,16,32,64]:
+
+            output1 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, i, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.00000005))
+            output2 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, i, 2, KAPS_DifferentDistributions.G_exponential(lmbda=0.00000001))
+            output3 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, i, 2, KAPS_DifferentDistributions.G_uniform())
+            output4 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, i, 2, KAPS_DifferentDistributions.G_zipf_log())
+            output5 = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, i, 2, KAPS_DifferentDistributions.G_weibull(.5, 10**8))
+
+            depth1 += output1[1]
+            depth2 += output2[1]
+            depth3 += output3[1]
+            depth4 += output4[1]
+            depth5 += output5[1]
+
+            #print(f"Output {i}: {output_[0]}, depth: {output_[1]}")
+            #print(f"Output {i}: {output2[0]}, depth: {output2[1]}")
+            #print(f"Output {i}: {output3[0]}, depth: {output3[1]}")
+            #print("-"*40)
+
+        #print("+="*30)
+        print(depth1, depth2, depth3, depth4, depth5)
+
+        depths[0] += depth1
+        depths[1] += depth2
+        depths[2] += depth3
+        depths[3] += depth4
+        depths[4] += depth5
+        print("+="*30)
+
+    print(depths)
 
 #output = thingy(0, len(arr)-1, arr, 687, 10, 2)
