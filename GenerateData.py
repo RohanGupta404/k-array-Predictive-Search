@@ -15,7 +15,7 @@ def gen_zipf(N, a=2.0, cap=10**12, rng=None):
 
 def gen_exponential(N, scale=1e4, rng=None):
     x = (rng or np.random).exponential(scale, N)
-    #x = x**2
+    x = x**2
     return x.astype(np.int64)
 
 def gen_clustered(N, clusters=5, spread=10000, max_base=10**9, rng=None):
