@@ -15,7 +15,7 @@ def gen_zipf(N, a=2.0, cap=10**12, rng=None):
 
 def gen_exponential(N, scale=1e4, rng=None):
     x = (rng or np.random).exponential(scale, N)
-    #x = x**2
+    x = x**2
     return x.astype(np.int64)
 
 def gen_clustered(N, clusters=5, spread=10000, max_base=10**9, rng=None):
@@ -76,11 +76,11 @@ def generate_array(N, dist="uniform", seed=None):
 # -----------------------------
 # Example usage
 # -----------------------------
-# if __name__ == "__main__":
-#
-#     arr = generate_array(1000000, dist="uniform", seed=176886)
-#
-#     import matplotlib.pyplot as plt
-#
-#     plt.plot(arr)
-#     plt.show()
+if __name__ == "__main__":
+
+    arr = generate_array(10**2, dist="exponential", seed=176886)
+
+    import matplotlib.pyplot as plt
+
+    plt.plot(arr)
+    plt.show()

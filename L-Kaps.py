@@ -4,7 +4,7 @@ import KAPS_DifferentDistributions as kaps
 import GenerateData
 
 # generating an exponential array
-arr = GenerateData.generate_array(10**3, dist="exponential", seed=123687)
+arr = GenerateData.generate_array(10**3, dist="clustered", seed=122)
 
 
 # Defining variables for the tests
