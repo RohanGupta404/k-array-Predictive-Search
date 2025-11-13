@@ -1,5 +1,6 @@
 import numpy as np
 import KAPS_DifferentDistributions
+import KAPS_BaseAlgorithm
 import time
 
 # -----------------------------
@@ -78,7 +79,14 @@ def generate_array(N, dist="uniform", seed=None):
 # -----------------------------
 if __name__ == "__main__":
 
-    arr = generate_array(10**2, dist="exponential", seed=176886)
+    arr = generate_array(10**6, dist="exponential", seed=176886)
+
+    target = arr[34554]
+    output = KAPS_BaseAlgorithm.kaps(0, len(arr) - 1, arr, target, 25, 5)
+    print(output)
+    output = KAPS_DifferentDistributions.kaps(0, len(arr) - 1, arr, target, 25, 5, KAPS_DifferentDistributions.G_exponential(0.00000001))
+    print(output)
+
 
     import matplotlib.pyplot as plt
 
