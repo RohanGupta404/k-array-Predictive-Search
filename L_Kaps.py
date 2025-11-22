@@ -162,10 +162,10 @@ def lkaps(arr):
 # -----------------------------
 # Example usage
 # -----------------------------
-import GenerateData
-
-# Generate 1,000,000-sample array from exponential distribution
-arr = GenerateData.generate_array(10**6, dist="exponential", seed=122)
-
-# Print best-fit distribution and total depth
-print(lkaps(arr))
+# import GenerateData
+#
+# # Generate 1,000,000-sample array from exponential distribution
+# arr = GenerateData.generate_array(10**6, dist="exponential", seed=1200)
+#
+# # Print best-fit distribution and total depth
+# print(lkaps(arr))

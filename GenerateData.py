@@ -12,12 +12,16 @@ def gen_uniform(N, low=0, high=10**9, rng=None):
 def gen_zipf(N, a=2.0, cap=10**12, rng=None):
     x = (rng or np.random).zipf(a, N)
     x = np.minimum(x, cap)
-    return x.astype(np.int64)
+    return x
 
-def gen_exponential(N, scale=1e4, rng=None):
+def gen_exponential(N, scale=10000, rng=None):
+    x = (rng or np.random).exponential(scale, N)
+    return x
+
+def gen_weibull(N, scale=1e4, rng=None):
     x = (rng or np.random).exponential(scale, N)
     x = x**2
-    return x.astype(np.int64)
+    return x
 
 def gen_clustered(N, clusters=5, spread=10000, max_base=10**9, rng=None):
     rng = rng or np.random
@@ -46,6 +50,7 @@ DIST_FUNCS = {
     "exponential": gen_exponential,
     "clustered": gen_clustered,
     "near_uniform": gen_near_uniform,
+    "weibull": gen_weibull,
 }
 
 # -----------------------------
@@ -69,7 +74,7 @@ def generate_array(N, dist="uniform", seed=None):
         unique_values = unique_values[:N]
 
     unique_values.sort(kind="mergesort")
-    arr = unique_values.astype(int).tolist()
+    arr = unique_values.tolist()
     return arr
 
 
@@ -77,18 +82,18 @@ def generate_array(N, dist="uniform", seed=None):
 # -----------------------------
 # Example usage
 # -----------------------------
-if __name__ == "__main__":
+# if __name__ == "__main__":
+#
+#     arr = generate_array(10**6, dist="exponential", seed=176886)
+#
+#     target = arr[34554]
+#     output = KAPS_BaseAlgorithm.kaps(0, len(arr) - 1, arr, target, 25, 5)
+#     print(output)
+#     output = KAPS_DifferentDistributions.kaps(0, len(arr) - 1, arr, target, 25, 5, KAPS_DifferentDistributions.G_exponential(0.00000001))
+#     print(output)
+#
+#     import matplotlib.pyplot as plt
+#
+#     plt.plot(arr)
+#     plt.show()
 
-    arr = generate_array(10**6, dist="exponential", seed=176886)
-
-    target = arr[34554]
-    output = KAPS_BaseAlgorithm.kaps(0, len(arr) - 1, arr, target, 25, 5)
-    print(output)
-    output = KAPS_DifferentDistributions.kaps(0, len(arr) - 1, arr, target, 25, 5, KAPS_DifferentDistributions.G_exponential(0.00000001))
-    print(output)
-
-
-    import matplotlib.pyplot as plt
-
-    plt.plot(arr)
-    plt.show()
