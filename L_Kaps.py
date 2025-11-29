@@ -16,66 +16,66 @@ def distributionList():
     # ----------------
     # Uniform distribution
     # ----------------
-    dists["uniform"] = kaps.G_uniform()
+    dists[("uniform", 0)] = kaps.G_uniform()
 
     # ----------------
     # Normal distributions (σ = 1, 100, 10k, 1M)
     # ----------------
-    for s in [1e0, 1e2, 1e4, 1e6]:
-        name = f"normal(mu=0, sigma={s:g})"
+    for s in [10**i for i in range(-10, 10)]:
+        name = ("normal", s)
         dists[name] = kaps.G_normal(mu=0, sigma=s)
 
     # ----------------------------------------------------------
     # Exponential distributions
     # λ values on a log scale: 10^-1 → 10^-9
     # ----------------------------------------------------------
-    for l in range(-1, -10, -1):
+    for l in range(-10, 10):
         lam = 10**l
-        name = f"exponential(lambda={lam:.0e})"
+        name = ("exponential", lam)
         dists[name] = kaps.G_exponential(lmbda=lam)
 
     # ----------------
     # Lognormal distributions
     # ----------------
-    for s in [0.5, 1.0, 2.0, 3.0]:
-        name = f"lognormal(mu=0, sigma={s:g})"
+    for s in [i/2 for i in range(1, 20)]:
+        name = ("lognormal", s)
         dists[name] = kaps.G_lognormal(mu=0, sigma=s)
 
     # ----------------
     # Pareto distributions
     # ----------------
-    for a in [1.1, 1.5, 2.0, 3.0, 5.0]:
-        name = f"pareto(xm=1.0, alpha={a:g})"
+    for a in [i/10 for i in range(10, 100)]:
+        name = ("pareto", a)
         dists[name] = kaps.G_pareto(xm=1.0, alpha=a)
 
     # ---------------------------------------------------------
     # Weibull distributions
     # k = shape, lam = scale (10^4 → 10^8)
     # ---------------------------------------------------------
-    for k in [0.3, 0.5, 1.0, 1.5, 2.0]:
-        for l in range(4, 9):  # 10^4 up to 10^8
+    for k in [i/10 for i in range(1, 30)]:
+        for l in range(2, 9):  # 10^4 up to 10^8
             lam = 10**l
-            name = f"weibull(k_shape={k:g}, lam={lam:.0e})"
+            name = ("weibull", k, lam)
             dists[name] = kaps.G_weibull(k_shape=k, lam=lam)
 
     # ----------------
     # Logistic distributions
     # ----------------
-    for s in [10, 100, 1000, 10000]:
-        name = f"logistic(mu=0, s={s:g})"
+    for s in [10**i for i in range(1, 10)]:
+        name = ("logistic", s)
         dists[name] = kaps.G_logistic(mu=0, s=s)
 
     # ----------------
     # Zipf log
     # ----------------
-    name = f"zipfLog()"
+    name = ("zipfLog", 0)
     dists[name] = kaps.G_zipf_log()
 
     # ----------------
     # Zipf–Pareto surrogate (for discrete data)
     # ----------------
-    for a in [1.1, 1.5, 2.0, 3.0]:
-        name = f"zipfpareto(xmin=1, alpha={a:g})"
+    for a in [i/10 for i in range(11, 100)]:
+        name = ("zipfpareto", a)
         dists[name] = kaps.G_zipf_pareto_surrogate(xmin=1, alpha=a)
 
     # ---------------------------------------------------------
