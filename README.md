@@ -50,9 +50,10 @@ matplotlib>=3.7
 
 ```text
 k-array-Predictive-Search/
-├── README.md
 ├── LICENSE
+├── pyproject.toml
 ├── requirements.txt
+├── README.md
 │
 ├── src/
 │   └── kaps/
