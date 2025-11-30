@@ -1,5 +1,4 @@
-import GenData
-import L_Kaps as lkaps
+from src.kaps import l_kaps as lkaps
 
 import numpy as np
 import matplotlib.pyplot as plt

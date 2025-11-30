@@ -1,4 +1,4 @@
-import KAPS_DifferentDistributions as kaps
+from src.kaps import dd_kaps as kaps
 
 
 # ---------------------------------------------------------

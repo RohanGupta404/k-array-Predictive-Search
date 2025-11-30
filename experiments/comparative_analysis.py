@@ -1,13 +1,3 @@
-import GenData
-
-import L_Kaps
-import KAPS_DifferentDistributions
-import LKAPs_to_GChoice
-import KAPS_BaseAlgorithm
-
-import InterpolationSearch
-import BinarySearch
-
 import random
 import matplotlib.pyplot as plt
 

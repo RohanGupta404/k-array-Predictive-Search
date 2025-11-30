@@ -1,8 +1,3 @@
-import KAPS_DifferentDistributions
-
-
-
-
 def make_G_from_lkaps(arr, lkaps_result):
     """
     arr           : the sorted data array you're searching in
