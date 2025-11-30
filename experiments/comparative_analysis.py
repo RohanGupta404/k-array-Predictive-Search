@@ -1,6 +1,16 @@
 import random
 import matplotlib.pyplot as plt
 
+import os, sys
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC_PATH = os.path.join(PROJECT_ROOT, "src")
+if SRC_PATH not in sys.path:
+    sys.path.insert(0, SRC_PATH)
+
+from kaps import base_kaps, dd_kaps, lkaps, lkaps_to_G
+from kaps.generators import *
+from kaps.baselines import binary_search, interpolation_search
+
 
 bk_arr = []
 dd_arr = []
@@ -9,20 +19,20 @@ bs_arr = []
 
 
 gen_functions = [
-    GenData.gen_uniform,
-    GenData.gen_zipf,
-    GenData.gen_normal,
-    GenData.gen_exponential,
-    GenData.gen_lognormal,
-    GenData.gen_pareto,
-    GenData.gen_weibull,
-    GenData.gen_logistic,
-    GenData.gen_zipf_pareto
+    gen_uniform,
+    gen_zipf,
+    gen_normal,
+    gen_exponential,
+    gen_lognormal,
+    gen_pareto,
+    gen_weibull,
+    gen_logistic,
+    gen_zipf_pareto
 ]
 arr_length = 10**6
 
 
-for i in range(1000):
+for i in range(5):
 
     # Generating an array
     arr = sorted(random.choice(gen_functions)(arr_length))
@@ -30,13 +40,13 @@ for i in range(1000):
     # Finding a random value to look for in the array
     target = arr[random.randint(0, len(arr))]
 
-    dist = L_Kaps.lkaps(arr)
+    dist = lkaps(arr)
 
 
-    baseKaps_result = KAPS_BaseAlgorithm.kaps(0, len(arr)-1, arr, target, 10, 2)
-    DDKaps_result = KAPS_DifferentDistributions.kaps(0, len(arr)-1, arr, target, 20, 2, LKAPs_to_GChoice.make_G_from_lkaps(arr, dist[0]))
-    interpolation_result = InterpolationSearch.interpolationSearch(arr, 0, len(arr)-1, target)
-    binary_result = BinarySearch.binarySearch(arr, 0, len(arr)-1, target)
+    baseKaps_result = base_kaps(0, len(arr)-1, arr, target, 10, 2)
+    DDKaps_result = dd_kaps(0, len(arr)-1, arr, target, 20, 2, lkaps_to_G(arr, dist[0]))
+    interpolation_result = interpolation_search(arr, 0, len(arr)-1, target)
+    binary_result = binary_search(arr, 0, len(arr)-1, target)
 
     bk_arr.append(baseKaps_result[1])
     dd_arr.append(DDKaps_result[1])

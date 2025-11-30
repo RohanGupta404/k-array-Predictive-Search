@@ -14,6 +14,7 @@ Usage:
 from .dd_kaps import kaps as dd_kaps
 from .l_kaps import lkaps as lkaps
 from .base_kaps import kaps as base_kaps
+from .lkaps_to_gchoice import make_G_from_lkaps as lkaps_to_G
 
 from . import generators     # for data generation
 from . import baselines      # for binary + interpolation search
@@ -24,4 +25,5 @@ __all__ = [
     "base_kaps",
     "generators",
     "baselines",
+    "lkaps_to_G",
 ]

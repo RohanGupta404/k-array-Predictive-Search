@@ -1,4 +1,5 @@
-from src.kaps import dd_kaps as kaps
+from . import dd_kaps
+from .dd_kaps import *
 
 
 # ---------------------------------------------------------
@@ -16,14 +17,14 @@ def distributionList():
     # ----------------
     # Uniform distribution
     # ----------------
-    dists[("uniform", 0)] = kaps.G_uniform()
+    dists[("uniform", 0)] = G_uniform()
 
     # ----------------
     # Normal distributions (σ = 1, 100, 10k, 1M)
     # ----------------
     for s in [10**i for i in range(-10, 10)]:
         name = ("normal", s)
-        dists[name] = kaps.G_normal(mu=0, sigma=s)
+        dists[name] = G_normal(mu=0, sigma=s)
 
     # ----------------------------------------------------------
     # Exponential distributions
@@ -32,21 +33,21 @@ def distributionList():
     for l in range(-10, 10):
         lam = 10**l
         name = ("exponential", lam)
-        dists[name] = kaps.G_exponential(lmbda=lam)
+        dists[name] = G_exponential(lmbda=lam)
 
     # ----------------
     # Lognormal distributions
     # ----------------
     for s in [i/2 for i in range(1, 20)]:
         name = ("lognormal", s)
-        dists[name] = kaps.G_lognormal(mu=0, sigma=s)
+        dists[name] = G_lognormal(mu=0, sigma=s)
 
     # ----------------
     # Pareto distributions
     # ----------------
     for a in [i/10 for i in range(10, 100)]:
         name = ("pareto", a)
-        dists[name] = kaps.G_pareto(xm=1.0, alpha=a)
+        dists[name] = G_pareto(xm=1.0, alpha=a)
 
     # ---------------------------------------------------------
     # Weibull distributions
@@ -56,34 +57,34 @@ def distributionList():
         for l in range(2, 9):  # 10^4 up to 10^8
             lam = 10**l
             name = ("weibull", k, lam)
-            dists[name] = kaps.G_weibull(k_shape=k, lam=lam)
+            dists[name] = G_weibull(k_shape=k, lam=lam)
 
     # ----------------
     # Logistic distributions
     # ----------------
     for s in [10**i for i in range(1, 10)]:
         name = ("logistic", s)
-        dists[name] = kaps.G_logistic(mu=0, s=s)
+        dists[name] = G_logistic(mu=0, s=s)
 
     # ----------------
     # Zipf log
     # ----------------
     name = ("zipfLog", 0)
-    dists[name] = kaps.G_zipf_log()
+    dists[name] = G_zipf_log()
 
     # ----------------
     # Zipf–Pareto surrogate (for discrete data)
     # ----------------
     for a in [i/10 for i in range(11, 100)]:
         name = ("zipfpareto", a)
-        dists[name] = kaps.G_zipf_pareto_surrogate(xmin=1, alpha=a)
+        dists[name] = G_zipf_pareto_surrogate(xmin=1, alpha=a)
 
     # ---------------------------------------------------------
     # Box–Cox family (under development)
     # ---------------------------------------------------------
     # for l in [-2, -1, -0.5, 0, 0.5, 1, 2]:
     #     name = f"boxcox_lambda{l}"
-    #     dists[name] = kaps.G_boxcox(lmbd=l)
+    #     dists[name] = G_boxcox(lmbd=l)
 
     return dists
 
@@ -135,7 +136,7 @@ def lkaps(arr):
             for k in k_values:
 
                 # Run KAPS and extract depth only
-                output = kaps.kaps(
+                output = dd_kaps(
                     0,               # left index
                     len(arr) - 1,    # right index
                     arr,             # dataset

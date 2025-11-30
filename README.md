@@ -252,7 +252,7 @@ PYTHONPATH=src python experiments/comparative_analysis.py
 * Import the algorithms and data generators:
 
 ```python
-from kaps import base_kaps, dd_kaps, l_kaps
+from kaps import base_kaps, dd_kaps, lkaps
 from kaps.baselines import binary_search, interpolation_search
 from kaps.generators import (
     gen_uniform, gen_zipf, gen_normal, gen_exponential,

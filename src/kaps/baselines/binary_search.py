@@ -3,7 +3,7 @@
 
 depth = 0
 
-def binarySearch(arr, lo, hi, x):
+def binary_search(arr, lo, hi, x):
     global depth
     depth += 1
 
@@ -24,11 +24,11 @@ def binarySearch(arr, lo, hi, x):
 
         # If x is larger → right half
         if arr[mid] < x:
-            return binarySearch(arr, mid + 1, hi, x)
+            return binary_search(arr, mid + 1, hi, x)
 
         # If x is smaller → left half
         if arr[mid] > x:
-            return binarySearch(arr, lo, mid - 1, x)
+            return binary_search(arr, lo, mid - 1, x)
 
     d = depth
     depth = 0

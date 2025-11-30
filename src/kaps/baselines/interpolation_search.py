@@ -3,7 +3,7 @@
 
 depth = 0
 
-def interpolationSearch(arr, lo, hi, x):
+def interpolation_search(arr, lo, hi, x):
 
     global depth
     depth += 1
@@ -36,11 +36,11 @@ def interpolationSearch(arr, lo, hi, x):
 
         # Right side
         if arr[pos] < x:
-            return interpolationSearch(arr, pos + 1, hi, x)
+            return interpolation_search(arr, pos + 1, hi, x)
 
         # Left side
         if arr[pos] > x:
-            return interpolationSearch(arr, lo, pos - 1, x)
+            return interpolation_search(arr, lo, pos - 1, x)
 
     d = depth
     depth = 0

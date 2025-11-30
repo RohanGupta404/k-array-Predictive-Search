@@ -1,7 +1,19 @@
-from src.kaps import l_kaps as lkaps
 
 import numpy as np
 import matplotlib.pyplot as plt
+import random
+
+
+import os, sys
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC_PATH = os.path.join(PROJECT_ROOT, "src")
+if SRC_PATH not in sys.path:
+    sys.path.insert(0, SRC_PATH)
+
+from kaps import lkaps
+from kaps.l_kaps import distributionList
+from kaps.generators import *
+
 
 
 def _pk_from_arr(arr):
@@ -239,14 +251,26 @@ def call_distribution(arr, dist_tuple):
 
 
 # Generating random array from distribution
-arr = GenData.gen_lognormal(10 ^ 6)
+gen_functions = [
+    gen_uniform,
+    gen_zipf,
+    gen_normal,
+    gen_exponential,
+    gen_lognormal,
+    gen_pareto,
+    gen_weibull,
+    gen_logistic,
+    gen_zipf_pareto
+]
+arr_length = 10**6
+arr = sorted(random.choice(gen_functions)(arr_length))
 
 # Using L-KAPs to get predict the distribution
-best_name, best_score = lkaps.lkaps(arr)
+best_name, best_score = lkaps(arr)
 print("Best fit:", best_name)
 
 # Creating a graph of the distribution predicted by L-KAPs
-dists = lkaps.distributionList()
+dists = distributionList()
 gen = dists[best_name]
 arr1 = call_distribution(arr, best_name)
 
@@ -254,8 +278,5 @@ arr1 = call_distribution(arr, best_name)
 plt.plot([i for i in range(len(arr))], arr, color='blue', label='Input Array')
 plt.plot([i for i in range(len(arr))], arr1, color='green', label=f'Predicted Distribution: {best_name}')
 plt.legend(loc='upper left')
-#plt.show()
+plt.show()
 
-# ----------------------------------------------------------------------------------------------------------------- RMSE
-
-print(dists)
