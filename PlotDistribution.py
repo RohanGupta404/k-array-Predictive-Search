@@ -255,4 +255,8 @@ arr1 = call_distribution(arr, best_name)
 plt.plot([i for i in range(len(arr))], arr, color='blue', label='Input Array')
 plt.plot([i for i in range(len(arr))], arr1, color='green', label=f'Predicted Distribution: {best_name}')
 plt.legend(loc='upper left')
-plt.show()
+#plt.show()
+
+# ----------------------------------------------------------------------------------------------------------------- RMSE
+
+print(dists)

@@ -1,53 +1,47 @@
 # Python3 program to implement
-# interpolation search
-# with recursion
+# interpolation search with recursion
 
-# If x is present in arr[0..n-1], then
-# returns index of it, else returns -1.
-
+depth = 0
 
 def interpolationSearch(arr, lo, hi, x):
 
-    # Since array is sorted, an element present
-    # in array must be in range defined by corner
-    if (lo <= hi and x >= arr[lo] and x <= arr[hi]):
+    global depth
+    depth += 1
 
-        # Probing the position with keeping
-        # uniform distribution in mind.
-        pos = lo + ((hi - lo) // (arr[hi] - arr[lo]) *
-                    (x - arr[lo]))
+    # Safety stop — prevents recursion overflow
+    if depth > 998:
+        d = depth
+        depth = 0
+        return -1, d
 
-        # Condition of target found
+    # Valid bounds
+    if lo <= hi and arr[lo] <= x <= arr[hi]:
+
+        # Prevent divide-by-zero infinite recursion
+        if arr[hi] == arr[lo]:
+            if arr[lo] == x:
+                return lo, depth
+            d = depth
+            depth = 0
+            return -1, d
+
+        # Probing the position
+        pos = int(lo + ((hi - lo) // (arr[hi] - arr[lo])) * (x - arr[lo]))
+
+        # Found
         if arr[pos] == x:
-            return pos
+            d = depth
+            depth = 0
+            return pos, d
 
-        # If x is larger, x is in right subarray
+        # Right side
         if arr[pos] < x:
-            return interpolationSearch(arr, pos + 1,
-                                       hi, x)
+            return interpolationSearch(arr, pos + 1, hi, x)
 
-        # If x is smaller, x is in left subarray
+        # Left side
         if arr[pos] > x:
-            return interpolationSearch(arr, lo,
-                                       pos - 1, x)
-    return -1
+            return interpolationSearch(arr, lo, pos - 1, x)
 
-# Driver code
-
-
-# Array of items in which
-# search will be conducted
-arr = [10, 12, 13, 16, 18, 19, 20,
-       21, 22, 23, 24, 33, 35, 42, 47]
-n = len(arr)
-
-# Element to be searched
-x = 42
-index = interpolationSearch(arr, 0, n - 1, x)
-
-if index != -1:
-    print("Element found at index", index)
-else:
-    print("Element not found")
-
-# This code is contributed by Hardik Jain
+    d = depth
+    depth = 0
+    return -1, d
